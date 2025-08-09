@@ -1,30 +1,44 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        # 1-5
-        # 1-3
-        hashMap = {}
+        # O(n ^2) O(n^2)
+        rowSet = {}
+        colSet = {}
+        squSet = {}
 
-        # row num digit
-        # col num digit
-        # square num digit 
-        # if already in the map -> False
-
-        def findSquare(row, col):
-            return (row // 3) * 3 + (col // 3)
-
-        for i in range(len(board)):
-            for j in range(len(board[i])):
-                if board[i][j] == ".":
+        for i in range(9):
+            for j in range(9):
+                cur = board[i][j]
+                if cur == '.':
                     continue
+                    
+                rowKey = 'row' + str(i)
+                colKey = 'col' + str(j)
+                squKey = 'squ' + str((i // 3) * 3 + (j // 3))
 
-                rowKey = "R" + str(i) + board[i][j]
-                colKey = "C" + str(j) + board[i][j]
-                squKey = "S" + str(findSquare(i, j)) + str(board[i][j])
-
-                if rowKey in hashMap or colKey in hashMap or squKey in hashMap:
-                    return False
-                hashMap[rowKey] = 1
-                hashMap[colKey] = 1
-                hashMap[squKey] = 1
-        
+                if rowKey in rowSet:
+                    if cur in rowSet[rowKey]:
+                        return False
+                    else:
+                        rowSet[rowKey].add(cur)
+                else:
+                    rowSet[rowKey] = set()
+                    rowSet[rowKey].add(cur)
+                    
+                if colKey in colSet:
+                    if cur in colSet[colKey]:
+                        return False
+                    else:
+                        colSet[colKey].add(cur)
+                else:
+                    colSet[colKey] = set()
+                    colSet[colKey].add(cur)
+                    
+                if squKey in squSet:
+                    if cur in squSet[squKey]:
+                        return False
+                    else:
+                        squSet[squKey].add(cur)
+                else:
+                    squSet[squKey] = set()
+                    squSet[squKey].add(cur)
         return True
