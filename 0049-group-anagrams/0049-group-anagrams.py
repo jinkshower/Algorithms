@@ -1,22 +1,26 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        # for each string, hash map it
-        hash_map = {}
+        # O(m * n) O(m)
+        # hash map  key - serialized arrays : string, string .. 
 
-        def make_key(s):
-            count = [0] * 26
-            for c in s:
-                count[ord(c) - ord('a')] += 1
-            
-            return tuple(count)
-
-        for s in strs:
-
-            made = make_key(s)
-            
-            if made in hash_map:
-                hash_map[made].append(s)
-            else:
-                hash_map[made] = [s]
+        cache = {}
         
-        return list(hash_map.values())
+        def hashArray(arr):
+            res = ''
+            for i in range(len(arr)):
+                res += str(i) + ":" + str(arr[i]) + ","
+            return res
+
+        for i in range(len(strs)):
+            alpha = [0] * 26
+            cur = strs[i]
+            for j in range(len(cur)):
+                alpha[ord(cur[j]) - ord('a')] += 1
+            key = hashArray(alpha)
+
+            if key in cache:
+                cache[key].append(cur)
+            else:
+                cache[key] = [cur]
+        
+        return list(cache.values())
