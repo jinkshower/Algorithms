@@ -1,33 +1,25 @@
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        if len(nums) == 0:
-            return 0
-        count = set()
-        for num in nums:
-            count.add(num)
+        #  1 , 2, 3, 4, 100 ,200 
+        # 1, 1, 2, 2, 4, 6, 7, 8, 100, 101 n logn for sorting / O(n)
         
-        max_length = 1
-        for num in count:
-            cur = num
-            length = 0
-            if cur - 1 in count:
+        # hash set
+        # 0 99 100 3 5 7 2 8 4 6 1
+        # [c] [c] [c][cccccccccccccc]
+
+        cache = set(nums)
+        maxLen = 0
+        for num in cache:
+            # not start
+            if num - 1 in cache:
                 continue
-
-            while cur in count:
-                cur += 1
-                length += 1
-            
-            max_length = max(max_length , length)
+            cur = num
+            curLen = 0
         
-        return max_length
-
-        # numSet = set(nums)
-        # longest = 0
-
-        # for n in nums:
-        #     if (n - 1) not in numSet:
-        #         length = 0
-        #         while (n + length) in numSet:
-        #             length += 1
-        #         longest = max(longest, length)
-        # return longest 
+            while cur in cache:
+                curLen += 1
+                cur += 1
+            
+            maxLen = max(maxLen, curLen)
+        
+        return maxLen
