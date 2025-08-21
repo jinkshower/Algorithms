@@ -30,6 +30,3 @@ class Solution:
                 print(val)
         
         return int(stack[-1])
-                
-
-    
